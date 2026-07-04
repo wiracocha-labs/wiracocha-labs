@@ -1,0 +1,33 @@
+---
+export interface Props {
+  tagline: string
+  license: string
+  year: number
+  links: Array<{ label: string; href: string }>
+}
+
+const { tagline, license, year, links } = Astro.props
+---
+
+<footer class="bg-primary border-t border-brand/20 py-10 text-center">
+  <div class="chasqui-container">
+    <p class="text-text-primary mb-4">{tagline}</p>
+    <nav class="flex justify-center gap-6 mb-4" aria-label="Social links">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-brand hover:text-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand rounded"
+            target="_blank"
+            rel="noopener"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <p class="text-text-primary/70 text-sm">
+      {license} · {year}
+    </p>
+  </div>
+</footer>

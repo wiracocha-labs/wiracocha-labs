@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "../../../design-system/tokens/theme.css";
+@import "../../../design-system/styles/globals.css";
+@import "../../../design-system/styles/buttons.css";
+@import "../../../design-system/styles/forms.css";
+@import "../../../design-system/styles/components.css";
+@import "../../../design-system/styles/ui.css";
+@import "../../../design-system/styles/layout.css";

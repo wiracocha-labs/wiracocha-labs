@@ -1,0 +1,31 @@
+---
+export interface Props {
+  href: string
+  variant?: 'primary' | 'secondary'
+  external?: boolean
+  class?: string
+}
+
+const { href, variant = 'primary', external = false, class: className = '' } = Astro.props
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-display font-semibold rounded-xl px-6 py-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'
+
+const variantClasses: Record<string, string> = {
+  primary:
+    'bg-brand text-text-secondary hover:bg-accent focus:ring-brand shadow-sm hover:shadow-md',
+  secondary:
+    'bg-transparent border-2 border-brand text-brand hover:bg-brand hover:text-text-secondary focus:ring-brand',
+}
+
+const classes = `${base} ${variantClasses[variant]} ${className}`
+---
+
+<a
+  href={href}
+  class={classes}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
+  <slot />
+</a>

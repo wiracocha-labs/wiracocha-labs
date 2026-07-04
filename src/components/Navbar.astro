@@ -1,0 +1,67 @@
+---
+export interface Props {
+  brand: { label: string; href: string }
+  links: Array<{ label: string; href: string }>
+}
+
+const { brand, links } = Astro.props
+---
+
+<header class="header">
+  <div class="header-content">
+    <a class="header-logo focus:outline-none focus:ring-2 focus:ring-brand rounded" href={brand.href}>{brand.label}</a>
+
+    <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-text-primary font-medium hover:text-brand transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand rounded"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      type="button"
+      id="menu-toggle"
+      class="md:hidden btn-square brand"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Toggle menu"
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-menu"
+    class="hidden md:hidden absolute top-full left-0 right-0 bg-primary border-b border-brand/20 flex-col p-4 gap-4 shadow-lg"
+    aria-label="Mobile navigation"
+  >
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class="text-text-primary font-medium hover:text-brand transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand rounded"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle')
+  const menu = document.getElementById('mobile-menu')
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const isHidden = menu.classList.toggle('hidden')
+      toggle.setAttribute('aria-expanded', String(!isHidden))
+    })
+  }
+</script>

@@ -1,11 +1,302 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro'
+import Navbar from '../components/Navbar.astro'
+import Footer from '../components/Footer.astro'
+import LinkButton from '../components/LinkButton.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import RoadmapItem from '../components/RoadmapItem.astro'
+import HelpBlock from '../components/HelpBlock.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const content = {
+  meta: {
+    title: 'Wiracocha Labs — Open research, built in public',
+    description:
+      'We research and build decentralized AI, P2P networks, and tools that run on your hardware.',
+  },
+  nav: {
+    brand: { label: 'Wiracocha Labs', href: '#' },
+    links: [
+      { label: 'Projects', href: '#projects' },
+      { label: 'Roadmap', href: '#roadmap' },
+      { label: 'How to help', href: '#help' },
+    ],
+  },
+  hero: {
+    title: 'Wiracocha Labs',
+    body: "We are building the technology we want to see in the world.\n\nAn internet where artificial intelligence doesn't live in corporate servers — but distributed, accessible, yours. Where a ten-year-old computer is not technological waste. Where access to the future doesn't depend on how much you can pay.\n\nWe are not waiting for someone else to build it.",
+    cta_primary: 'See projects',
+    cta_secondary: 'How to help',
+  },
+  problem: {
+    title: "AI is concentrating. That's not an accident.",
+    body: "Today, using real artificial intelligence requires expensive hardware, constant connectivity, and paying a corporation for every query. The most powerful models live in datacenters that consume the electricity of entire cities. Five-year-old computers are already 'not enough'. The most advanced knowledge of humanity is behind a subscription.\n\nThis is not inevitable. It's an architectural decision.\n\nWhen infrastructure is centralized, whoever controls it decides who gets access, at what price, and under what conditions. The history of the internet already showed us where that leads.\n\nWiracocha Labs researches and builds the alternative: AI models that run on your hardware, networks that have no owner, tools that work even if you don't have the latest laptop.",
+  },
+  projects: {
+    id: 'projects',
+    title: 'What we are building',
+    link_label: 'View on GitHub',
+    items: [
+      {
+        name: 'Chaka',
+        description:
+          'Research on delta compression between model versions for efficient synchronization between nodes in a decentralized P2P network with modest heterogeneous hardware.',
+        status: 'Researching',
+        badge_variant: 'accent',
+        href: 'https://github.com/wiracocha-labs/compresor',
+      },
+      {
+        name: 'quipu-ipfs',
+        description:
+          'Decentralized P2P network in Rust. Generic layer of identity, storage and transport for decentralized apps. First use case: encrypted messaging.',
+        status: 'In development',
+        badge_variant: 'primary',
+        href: 'https://github.com/wiracocha-labs/quipu-ipfs',
+      },
+      {
+        name: 'Yachay',
+        description:
+          "Selects the right local AI model for your hardware and your real task. No downloading what you don't need, no paying for what you don't use.",
+        status: 'Planned',
+        badge_variant: 'secondary',
+        href: 'https://github.com/wiracocha-labs/wiracocha-labs',
+      },
+    ],
+  },
+  roadmap: {
+    id: 'roadmap',
+    title: 'Where we are going',
+    note: 'No dates — verifiable milestones',
+    badge_variants: {
+      in_progress: 'accent',
+      planned: 'secondary',
+      horizon: 'primary',
+    },
+    phases: [
+      {
+        title: 'Phase 0 — Foundations',
+        status: 'In progress',
+        status_key: 'in_progress',
+        description:
+          'Base architectures for Chaka and quipu-ipfs. First public repos.',
+      },
+      {
+        title: 'Phase 1 — First deliverables',
+        status: 'Planned',
+        status_key: 'planned',
+        description:
+          'Yachay functional. Two quipu-ipfs nodes communicating on local network. First delta compression experiments.',
+      },
+      {
+        title: 'Phase 2 — Real network',
+        status: 'Planned',
+        status_key: 'planned',
+        description:
+          'quipu-ipfs working between nodes on the real internet. Encrypted messaging as first product. Published research results.',
+      },
+      {
+        title: 'Phase 3 — Platform',
+        status: 'Planned',
+        status_key: 'planned',
+        description:
+          'quipu-ipfs as a platform for third-party apps. Chaka integration with the network to distribute models.',
+      },
+      {
+        title: 'Phase 4 — Decentralized AI',
+        status: 'Horizon (~10 years)',
+        status_key: 'horizon',
+        description:
+          'An AI model that lives in the network, not in a datacenter. No corporate owner. Accessible from modest hardware.',
+      },
+    ],
+  },
+  help: {
+    id: 'help',
+    title: 'How to be part of this',
+    blocks: [
+      {
+        title: 'Contribute code',
+        description:
+          'If you work with Rust, P2P, compression, or local AI — the repos are open. Every contribution counts.',
+        cta_label: 'See repositories',
+        cta_href: 'https://github.com/wiracocha-labs',
+        external: true,
+      },
+      {
+        title: 'Share',
+        description:
+          'The simplest way to help: share the project with someone who believes this matters.',
+        cta_label: 'Follow on Instagram',
+        cta_href: 'https://www.instagram.com/wiracocha_labs/',
+        external: true,
+      },
+      {
+        title: 'Fund',
+        description: '',
+        cta_label: 'Support the project',
+        cta_href: '[FUNDING_LINK]',
+        external: true,
+      },
+    ],
+  },
+  team: {
+    title: 'Who is behind this',
+    body: 'Wiracocha Labs is today one person: Renzo Tincopa, a backend developer focused on Rust and decentralized systems, from Peru.\n\nWe are not a Silicon Valley team with venture funding. We are open research, built in public, from a rented room — because the future shouldn\'t belong only to those who already have the resources to build it.',
+    cta_label: 'Portfolio',
+    cta_href: '[YOUR_PORTFOLIO_LINK_HERE]',
+    external: true,
+  },
+  footer: {
+    tagline: 'Wiracocha Labs — Open research, built in public.',
+    license: 'AGPL-3.0 — Open source',
+    links: [
+      { label: 'GitHub', href: 'https://github.com/wiracocha-labs' },
+      { label: 'Instagram', href: 'https://www.instagram.com/wiracocha_labs/' },
+    ],
+  },
+}
+
+const paragraphs = (text: string) => text.split('\n\n').filter(Boolean)
+const isValidHref = (href: string) =>
+  /^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('/')
+
+const visibleHelpBlocks = content.help.blocks.filter((block) =>
+  isValidHref(block.cta_href)
+)
+const showTeamCta = isValidHref(content.team.cta_href)
+const year = new Date().getFullYear()
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={content.meta.title} description={content.meta.description}>
+  <Navbar brand={content.nav.brand} links={content.nav.links} />
+
+  <main>
+    <section class="relative py-24 md:py-32">
+      <div class="chasqui-container">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl md:text-6xl font-display font-bold text-brand mb-6">
+            {content.hero.title}
+          </h1>
+          <div class="space-y-4 text-lg md:text-xl text-text-primary/90 mb-10">
+            {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
+          </div>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <LinkButton href="#projects" variant="primary">
+              {content.hero.cta_primary}
+            </LinkButton>
+            <LinkButton href="#help" variant="secondary">
+              {content.hero.cta_secondary}
+            </LinkButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-primary">
+      <div class="chasqui-container">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
+            {content.problem.title}
+          </h2>
+          <div class="space-y-4 text-base md:text-lg text-text-primary/90">
+            {paragraphs(content.problem.body).map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id={content.projects.id} class="py-16 md:py-24">
+      <div class="chasqui-container">
+        <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">
+          {content.projects.title}
+        </h2>
+        <div class="card-grid">
+          {content.projects.items.map((project) => (
+            <ProjectCard
+              name={project.name}
+              description={project.description}
+              status={project.status}
+              badgeVariant={project.badge_variant as 'accent' | 'primary' | 'secondary'}
+              href={project.href}
+              linkLabel={content.projects.link_label}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id={content.roadmap.id} class="py-16 md:py-24 bg-primary">
+      <div class="chasqui-container">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
+          <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand">
+            {content.roadmap.title}
+          </h2>
+          <span class="badge badge-secondary w-fit">{content.roadmap.note}</span>
+        </div>
+        <ul class="relative">
+          {content.roadmap.phases.map((phase, index) => (
+            <RoadmapItem
+              phase={phase.title}
+              title={phase.title}
+              status={phase.status}
+              badgeVariant={
+                content.roadmap.badge_variants[
+                  phase.status_key as keyof typeof content.roadmap.badge_variants
+                ] as 'accent' | 'primary' | 'secondary'
+              }
+              description={phase.description}
+              isLast={index === content.roadmap.phases.length - 1}
+            />
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id={content.help.id} class="py-16 md:py-24">
+      <div class="chasqui-container">
+        <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">
+          {content.help.title}
+        </h2>
+        <div class="card-grid">
+          {visibleHelpBlocks.map((block) => (
+            <HelpBlock
+              title={block.title}
+              description={block.description}
+              ctaLabel={block.cta_label}
+              ctaHref={block.cta_href}
+              external={block.external}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-primary">
+      <div class="chasqui-container">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
+            {content.team.title}
+          </h2>
+          <div class="space-y-4 text-base md:text-lg text-text-primary/90 mb-8">
+            {paragraphs(content.team.body).map((p) => <p>{p}</p>)}
+          </div>
+          {showTeamCta && (
+            <LinkButton
+              href={content.team.cta_href}
+              variant="secondary"
+              external={content.team.external}
+            >
+              {content.team.cta_label}
+            </LinkButton>
+          )}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer
+    tagline={content.footer.tagline}
+    license={content.footer.license}
+    year={year}
+    links={content.footer.links}
+  />
 </Layout>
