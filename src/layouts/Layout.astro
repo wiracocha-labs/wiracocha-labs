@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ShootingDots from '../components/ShootingDots.astro';
 
 export interface Props {
 	title: string;
@@ -27,6 +28,9 @@ const { title, description } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="bg-primary text-text-primary antialiased bg-[url('/fondo_wiracocha_redes_copy.webp')] bg-cover bg-center bg-fixed bg-no-repeat">
-		<slot />
+		<ShootingDots />
+		<div class="relative z-20">
+			<slot />
+		</div>
 	</body>
 </html>
