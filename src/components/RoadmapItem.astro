@@ -3,7 +3,7 @@ export interface Props {
   phase: string
   title: string
   status: string
-  badgeVariant: 'accent' | 'primary' | 'secondary'
+  badgeVariant: 'action' | 'accent' | 'primary' | 'secondary'
   description: string
   isLast?: boolean
 }
@@ -11,6 +11,7 @@ export interface Props {
 const { phase, title, status, badgeVariant, description, isLast = false } = Astro.props
 
 const badgeClasses: Record<string, string> = {
+  action: 'badge-action',
   accent: 'badge-accent',
   primary: 'badge-primary',
   secondary: 'badge-secondary',

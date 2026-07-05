@@ -6,6 +6,7 @@ import LinkButton from '../components/LinkButton.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import RoadmapItem from '../components/RoadmapItem.astro'
 import HelpBlock from '../components/HelpBlock.astro'
+import ImageSquare from '../components/ImageSquare.astro'
 
 const content = {
   meta: {
@@ -15,6 +16,7 @@ const content = {
   },
   nav: {
     brand: { label: 'Wiracocha Labs', href: '#' },
+    logo: { src: '/logo.png', alt: 'Wiracocha Labs logo' },
     links: [
       { label: 'Projects', href: '#projects' },
       { label: 'Roadmap', href: '#roadmap' },
@@ -41,7 +43,7 @@ const content = {
         description:
           'Research on delta compression between model versions for efficient synchronization between nodes in a decentralized P2P network with modest heterogeneous hardware.',
         status: 'Researching',
-        badge_variant: 'accent',
+        badge_variant: 'action',
         href: 'https://github.com/wiracocha-labs/compresor',
       },
       {
@@ -67,7 +69,7 @@ const content = {
     title: 'Where we are going',
     note: 'No dates — verifiable milestones',
     badge_variants: {
-      in_progress: 'accent',
+      in_progress: 'action',
       planned: 'secondary',
       horizon: 'primary',
     },
@@ -167,39 +169,45 @@ const year = new Date().getFullYear()
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
-  <Navbar brand={content.nav.brand} links={content.nav.links} />
+  <Navbar brand={content.nav.brand} logo={content.nav.logo} links={content.nav.links} />
 
   <main>
     <section class="relative py-24 md:py-32">
       <div class="chasqui-container">
-        <div class="max-w-3xl">
-          <h1 class="text-4xl md:text-6xl font-display font-bold text-brand mb-6">
-            {content.hero.title}
-          </h1>
-          <div class="space-y-4 text-lg md:text-xl text-text-primary/90 mb-10">
-            {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 class="text-4xl md:text-6xl font-display font-bold text-brand mb-6">
+              {content.hero.title}
+            </h1>
+            <div class="space-y-4 text-lg md:text-xl text-text-primary/90 mb-10">
+              {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <LinkButton href="#projects" variant="primary">
+                {content.hero.cta_primary}
+              </LinkButton>
+              <LinkButton href="#help" variant="secondary">
+                {content.hero.cta_secondary}
+              </LinkButton>
+            </div>
           </div>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <LinkButton href="#projects" variant="primary">
-              {content.hero.cta_primary}
-            </LinkButton>
-            <LinkButton href="#help" variant="secondary">
-              {content.hero.cta_secondary}
-            </LinkButton>
-          </div>
+          <ImageSquare class="w-56 h-56 md:w-80 md:h-80 mx-auto" />
         </div>
       </div>
     </section>
 
-    <section class="py-16 md:py-24 bg-primary">
+    <section class="py-16 md:py-24">
       <div class="chasqui-container">
-        <div class="max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
-            {content.problem.title}
-          </h2>
-          <div class="space-y-4 text-base md:text-lg text-text-primary/90">
-            {paragraphs(content.problem.body).map((p) => <p>{p}</p>)}
+        <div class="grid md:grid-cols-[1fr_auto] gap-12 items-center">
+          <div class="max-w-3xl">
+            <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
+              {content.problem.title}
+            </h2>
+            <div class="space-y-4 text-base md:text-lg text-text-primary/90">
+              {paragraphs(content.problem.body).map((p) => <p>{p}</p>)}
+            </div>
           </div>
+          <ImageSquare class="w-48 h-48 md:w-64 md:h-64 mx-auto hidden md:flex" />
         </div>
       </div>
     </section>
@@ -215,7 +223,7 @@ const year = new Date().getFullYear()
               name={project.name}
               description={project.description}
               status={project.status}
-              badgeVariant={project.badge_variant as 'accent' | 'primary' | 'secondary'}
+              badgeVariant={project.badge_variant as 'action' | 'accent' | 'primary' | 'secondary'}
               href={project.href}
               linkLabel={content.projects.link_label}
             />
@@ -230,7 +238,7 @@ const year = new Date().getFullYear()
           <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand">
             {content.roadmap.title}
           </h2>
-          <span class="badge badge-secondary w-fit">{content.roadmap.note}</span>
+          <span class="badge badge-action w-fit">{content.roadmap.note}</span>
         </div>
         <ul class="relative">
           {content.roadmap.phases.map((phase, index) => (
@@ -241,7 +249,7 @@ const year = new Date().getFullYear()
               badgeVariant={
                 content.roadmap.badge_variants[
                   phase.status_key as keyof typeof content.roadmap.badge_variants
-                ] as 'accent' | 'primary' | 'secondary'
+                ] as 'action' | 'accent' | 'primary' | 'secondary'
               }
               description={phase.description}
               isLast={index === content.roadmap.phases.length - 1}
@@ -270,24 +278,27 @@ const year = new Date().getFullYear()
       </div>
     </section>
 
-    <section class="py-16 md:py-24 bg-primary">
+    <section class="py-16 md:py-24">
       <div class="chasqui-container">
-        <div class="max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
-            {content.team.title}
-          </h2>
-          <div class="space-y-4 text-base md:text-lg text-text-primary/90 mb-8">
-            {paragraphs(content.team.body).map((p) => <p>{p}</p>)}
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="max-w-3xl">
+            <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-6">
+              {content.team.title}
+            </h2>
+            <div class="space-y-4 text-base md:text-lg text-text-primary/90 mb-8">
+              {paragraphs(content.team.body).map((p) => <p>{p}</p>)}
+            </div>
+            {showTeamCta && (
+              <LinkButton
+                href={content.team.cta_href}
+                variant="secondary"
+                external={content.team.external}
+              >
+                {content.team.cta_label}
+              </LinkButton>
+            )}
           </div>
-          {showTeamCta && (
-            <LinkButton
-              href={content.team.cta_href}
-              variant="secondary"
-              external={content.team.external}
-            >
-              {content.team.cta_label}
-            </LinkButton>
-          )}
+          <ImageSquare class="w-56 h-56 md:w-72 md:h-72 mx-auto" />
         </div>
       </div>
     </section>

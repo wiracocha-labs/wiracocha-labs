@@ -1,11 +1,12 @@
 ---
 import LinkButton from './LinkButton.astro'
+import ImageSquare from './ImageSquare.astro'
 
 export interface Props {
   name: string
   description: string
   status: string
-  badgeVariant: 'accent' | 'primary' | 'secondary'
+  badgeVariant: 'action' | 'accent' | 'primary' | 'secondary'
   href: string
   linkLabel: string
 }
@@ -13,6 +14,7 @@ export interface Props {
 const { name, description, status, badgeVariant, href, linkLabel } = Astro.props
 
 const badgeClasses: Record<string, string> = {
+  action: 'badge-action',
   accent: 'badge-accent',
   primary: 'badge-primary',
   secondary: 'badge-secondary',
@@ -20,12 +22,13 @@ const badgeClasses: Record<string, string> = {
 ---
 
 <article class="card h-full flex flex-col">
+  <ImageSquare class="w-full aspect-square mb-4" />
   <div class="flex items-start justify-between gap-4 mb-4">
     <h3 class="card-title">{name}</h3>
     <span class={`badge ${badgeClasses[badgeVariant]}`}>{status}</span>
   </div>
   <p class="card-desc mb-6 flex-1">{description}</p>
-  <LinkButton href={href} variant="secondary" external class="w-full sm:w-auto">
+  <LinkButton href={href} variant="primary" external class="w-full sm:w-auto">
     {linkLabel}
   </LinkButton>
 </article>

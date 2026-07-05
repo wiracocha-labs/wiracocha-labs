@@ -15,7 +15,7 @@ const { title, description, ctaLabel, ctaHref, external = false } = Astro.props
 <article class="card flex flex-col h-full">
   <h3 class="card-title mb-3">{title}</h3>
   {description && <p class="card-desc mb-6 flex-1">{description}</p>}
-  <LinkButton href={ctaHref} variant="secondary" external class="w-full sm:w-auto mt-auto">
+  <LinkButton href={ctaHref} variant="primary" external class="w-full sm:w-auto mt-auto">
     {ctaLabel}
   </LinkButton>
 </article>

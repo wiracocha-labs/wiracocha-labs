@@ -1,0 +1,35 @@
+.card {
+  background: var(--color-primary);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  border: var(--border-light);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-brand);
+}
+
+.card-desc {
+  color: var(--color-text-primary);
+}
+
+.hover-lift {
+  transition: var(--transition-normal);
+}
+
+.hover-lift:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.hover-brand {
+  transition: var(--transition-normal);
+}
+
+.hover-brand:hover {
+  background-color: var(--color-brand-10);
+  color: var(--color-brand);
+}
