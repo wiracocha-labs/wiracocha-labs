@@ -126,7 +126,8 @@ const { class: className = '' } = Astro.props
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       cx = rect.width / 2
       cy = rect.height / 2
-      radius = Math.min(rect.width, rect.height) * 0.125
+      const maxRadius = rect.width < 768 ? 45 : 90
+      radius = Math.min(maxRadius, Math.min(rect.width, rect.height) * 0.45)
       baseLines = buildSphereLines(radius)
     }
 
