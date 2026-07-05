@@ -1,0 +1,190 @@
+---
+export interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+---
+
+<div class={`sphere-wrapper ${className}`} data-sphere-wrapper>
+  <canvas class="sphere-canvas" data-sphere-canvas></canvas>
+</div>
+
+<style>
+  .sphere-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .sphere-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+</style>
+
+<script>
+  const COLOR = '#A9442B'
+  const LAT_COUNT = 9
+  const LON_COUNT = 14
+  const SEGMENTS = 90
+  const FOCAL = 620
+  const BASE_SPEED = 0.006
+
+  function normalize(v: { x: number; y: number; z: number }) {
+    const len = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+    return { x: v.x / len, y: v.y / len, z: v.z / len }
+  }
+
+  const axis = normalize({ x: 1, y: 1, z: 0.35 })
+
+  function rotateAroundAxis(
+    p: { x: number; y: number; z: number },
+    k: { x: number; y: number; z: number },
+    angle: number
+  ) {
+    const cos = Math.cos(angle)
+    const sin = Math.sin(angle)
+    const dot = p.x * k.x + p.y * k.y + p.z * k.z
+
+    const crossX = k.y * p.z - k.z * p.y
+    const crossY = k.z * p.x - k.x * p.z
+    const crossZ = k.x * p.y - k.y * p.x
+
+    return {
+      x: p.x * cos + crossX * sin + k.x * dot * (1 - cos),
+      y: p.y * cos + crossY * sin + k.y * dot * (1 - cos),
+      z: p.z * cos + crossZ * sin + k.z * dot * (1 - cos),
+    }
+  }
+
+  function mapRange(value: number, inMin: number, inMax: number, outMin: number, outMax: number) {
+    const t = (value - inMin) / (inMax - inMin)
+    return outMin + t * (outMax - outMin)
+  }
+
+  function hexToRgba(hex: string, alpha: number) {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+
+  function buildSphereLines(radius: number) {
+    const lines: Array<Array<{ x: number; y: number; z: number }>> = []
+
+    for (let i = 1; i < LAT_COUNT; i++) {
+      const phi = -Math.PI / 2 + (Math.PI * i) / LAT_COUNT
+      const r = radius * Math.cos(phi)
+      const y = radius * Math.sin(phi)
+      const pts = []
+      for (let j = 0; j <= SEGMENTS; j++) {
+        const theta = (2 * Math.PI * j) / SEGMENTS
+        pts.push({ x: r * Math.cos(theta), y, z: r * Math.sin(theta) })
+      }
+      lines.push(pts)
+    }
+
+    for (let i = 0; i < LON_COUNT; i++) {
+      const theta = (Math.PI * i) / LON_COUNT
+      const pts = []
+      for (let j = 0; j <= SEGMENTS; j++) {
+        const phi = -Math.PI + (2 * Math.PI * j) / SEGMENTS
+        pts.push({
+          x: radius * Math.cos(phi) * Math.cos(theta),
+          y: radius * Math.sin(phi),
+          z: radius * Math.cos(phi) * Math.sin(theta),
+        })
+      }
+      lines.push(pts)
+    }
+
+    return lines
+  }
+
+  function initSphere(wrapper: HTMLElement, canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const speed = prefersReduced ? 0 : BASE_SPEED
+
+    let baseLines: Array<Array<{ x: number; y: number; z: number }>> = []
+    let radius = 0
+    let angle = 0
+    let cx = 0
+    let cy = 0
+
+    function resize() {
+      const rect = wrapper.getBoundingClientRect()
+      const dpr = window.devicePixelRatio || 1
+      canvas.width = rect.width * dpr
+      canvas.height = rect.height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      cx = rect.width / 2
+      cy = rect.height / 2
+      radius = Math.min(rect.width, rect.height) * 0.125
+      baseLines = buildSphereLines(radius)
+    }
+
+    function project(p: { x: number; y: number; z: number }) {
+      const scale = FOCAL / (FOCAL + p.z)
+      return {
+        x: cx + p.x * scale,
+        y: cy + p.y * scale,
+      }
+    }
+
+    function draw() {
+      const rect = wrapper.getBoundingClientRect()
+      ctx.clearRect(0, 0, rect.width, rect.height)
+
+      ctx.lineWidth = 1
+
+      for (const line of baseLines) {
+        for (let i = 0; i < line.length - 1; i++) {
+          const p1 = rotateAroundAxis(line[i], axis, angle)
+          const p2 = rotateAroundAxis(line[i + 1], axis, angle)
+
+          const proj1 = project(p1)
+          const proj2 = project(p2)
+
+          const avgZ = (p1.z + p2.z) / 2
+          const alpha = mapRange(avgZ, -radius, radius, 0.15, 0.95)
+
+          ctx.strokeStyle = hexToRgba(COLOR, alpha)
+          ctx.beginPath()
+          ctx.moveTo(proj1.x, proj1.y)
+          ctx.lineTo(proj2.x, proj2.y)
+          ctx.stroke()
+        }
+      }
+    }
+
+    function loop() {
+      draw()
+      if (speed > 0) {
+        angle += speed
+        requestAnimationFrame(loop)
+      }
+    }
+
+    resize()
+    loop()
+
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(resize)
+      ro.observe(wrapper)
+    } else {
+      window.addEventListener('resize', resize)
+    }
+  }
+
+  document.querySelectorAll('[data-sphere-wrapper]').forEach((wrapper) => {
+    const canvas = wrapper.querySelector('[data-sphere-canvas]') as HTMLCanvasElement | null
+    if (canvas) initSphere(wrapper as HTMLElement, canvas)
+  })
+</script>

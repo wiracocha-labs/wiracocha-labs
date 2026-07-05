@@ -7,6 +7,7 @@ import ProjectCard from '../components/ProjectCard.astro'
 import RoadmapItem from '../components/RoadmapItem.astro'
 import HelpBlock from '../components/HelpBlock.astro'
 import ImageSquare from '../components/ImageSquare.astro'
+import RotatingSphere from '../components/RotatingSphere.astro'
 
 const content = {
   meta: {
@@ -172,10 +173,10 @@ const year = new Date().getFullYear()
   <Navbar brand={content.nav.brand} logo={content.nav.logo} links={content.nav.links} />
 
   <main>
-    <section class="relative py-24 md:py-32">
-      <div class="chasqui-container">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+    <section class="relative min-h-screen flex items-center py-24 md:py-32">
+      <div class="chasqui-container w-full">
+        <div class="grid grid-cols-12 gap-6 md:gap-12 items-stretch min-h-[calc(100vh-12rem)]">
+          <div class="col-span-12 md:col-span-5 z-20 flex flex-col justify-center">
             <h1 class="text-4xl md:text-6xl font-display font-bold text-brand mb-6">
               {content.hero.title}
             </h1>
@@ -191,7 +192,17 @@ const year = new Date().getFullYear()
               </LinkButton>
             </div>
           </div>
-          <ImageSquare class="w-56 h-56 md:w-80 md:h-80 mx-auto" />
+          <div class="col-span-12 md:col-span-9 md:col-start-4 relative flex items-center justify-center min-h-[80vh]">
+            <img
+              src="/chakanabg.webp"
+              alt=""
+              class="absolute inset-0 w-full h-full object-contain"
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+            />
+            <RotatingSphere class="relative z-10 w-full h-full max-h-[70vh] mx-auto" />
+          </div>
         </div>
       </div>
     </section>
