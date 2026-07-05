@@ -46,6 +46,7 @@ const content = {
         status: 'Researching',
         badge_variant: 'action',
         href: 'https://github.com/wiracocha-labs/compresor',
+        image: '/chaka.webp',
       },
       {
         name: 'quipu-ipfs',
@@ -54,6 +55,7 @@ const content = {
         status: 'In development',
         badge_variant: 'primary',
         href: 'https://github.com/wiracocha-labs/quipu-ipfs',
+        image: '/quipu-ipfs.webp',
       },
       {
         name: 'Yachay',
@@ -62,6 +64,7 @@ const content = {
         status: 'Planned',
         badge_variant: 'secondary',
         href: 'https://github.com/wiracocha-labs/wiracocha-labs',
+        image: '/yachay.webp',
       },
     ],
   },
@@ -145,8 +148,12 @@ const content = {
     title: 'Who is behind this',
     body: 'Wiracocha Labs is today one person: Renzo Tincopa, a backend developer focused on Rust and decentralized systems, from Peru.\n\nWe are not a Silicon Valley team with venture funding. We are open research, built in public, from a rented room — because the future shouldn\'t belong only to those who already have the resources to build it.',
     cta_label: 'Portfolio',
-    cta_href: '[YOUR_PORTFOLIO_LINK_HERE]',
+    cta_href: 'https://renzotincopa.xyz/',
     external: true,
+    social: [
+      { label: 'GitHub', href: 'https://github.com/TincoNomad' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/tinconomad/' },
+    ],
   },
   footer: {
     tagline: 'Wiracocha Labs — Open research, built in public.',
@@ -176,20 +183,22 @@ const year = new Date().getFullYear()
     <section class="relative min-h-screen flex items-center">
       <div class="chasqui-container w-full relative">
         <div class="grid grid-cols-12 gap-6 md:gap-0 items-stretch min-h-[calc(100vh-12rem)]">
-          <div class="col-span-12 md:col-span-5 z-20 flex flex-col justify-center">
-            <h1 class="text-4xl md:text-6xl font-display font-bold text-brand mb-6">
-              {content.hero.title}
-            </h1>
-            <div class="space-y-4 text-lg md:text-xl text-text-primary/90 mb-10">
-              {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
-            </div>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <LinkButton href="#projects" variant="primary">
-                {content.hero.cta_primary}
-              </LinkButton>
-              <LinkButton href="#help" variant="secondary">
-                {content.hero.cta_secondary}
-              </LinkButton>
+          <div class="col-span-12 md:col-span-6 z-20 flex flex-col justify-center md:-translate-y-2">
+            <div class="bg-primary/60 backdrop-blur-[6px] rounded-l-2xl rounded-r-none p-8 md:p-10 md:-mr-2">
+              <h1 class="text-5xl md:text-7xl font-display font-bold text-brand mb-6">
+                {content.hero.title}
+              </h1>
+              <div class="space-y-4 text-xl md:text-2xl text-text-primary/90 mb-6">
+                {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <LinkButton href="#projects" variant="primary" class="text-lg md:text-xl md:px-8 md:py-4">
+                  {content.hero.cta_primary}
+                </LinkButton>
+                <LinkButton href="#help" variant="secondary" class="text-lg md:text-xl md:px-8 md:py-4">
+                  {content.hero.cta_secondary}
+                </LinkButton>
+              </div>
             </div>
           </div>
           <div class="col-span-12 md:absolute md:top-0 md:bottom-0 md:left-[25%] md:w-[75%] flex items-center justify-center min-h-[40vh] md:min-h-0">
@@ -220,7 +229,7 @@ const year = new Date().getFullYear()
               {paragraphs(content.problem.body).map((p) => <p>{p}</p>)}
             </div>
           </div>
-          <ImageSquare class="w-48 h-48 md:w-64 md:h-64 mx-auto hidden md:flex" />
+          <ImageSquare src="/problem.webp" alt="Problem" class="w-96 max-w-full mx-auto hidden md:flex" />
         </div>
       </div>
     </section>
@@ -239,6 +248,7 @@ const year = new Date().getFullYear()
               badgeVariant={project.badge_variant as 'action' | 'accent' | 'primary' | 'secondary'}
               href={project.href}
               linkLabel={content.projects.link_label}
+              image={project.image}
             />
           ))}
         </div>
@@ -301,17 +311,31 @@ const year = new Date().getFullYear()
             <div class="space-y-4 text-base md:text-lg text-text-primary/90 mb-8">
               {paragraphs(content.team.body).map((p) => <p>{p}</p>)}
             </div>
-            {showTeamCta && (
-              <LinkButton
-                href={content.team.cta_href}
-                variant="secondary"
-                external={content.team.external}
-              >
-                {content.team.cta_label}
-              </LinkButton>
-            )}
+            <div class="flex flex-wrap items-center gap-4">
+              {showTeamCta && (
+                <LinkButton
+                  href={content.team.cta_href}
+                  variant="secondary"
+                  external={content.team.external}
+                >
+                  {content.team.cta_label}
+                </LinkButton>
+              )}
+              <div class="flex items-center gap-3">
+                {content.team.social.map((link) => (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-sm text-brand hover:underline underline-offset-4"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
-          <ImageSquare class="w-56 h-56 md:w-72 md:h-72 mx-auto" />
+          <ImageSquare src="/team.webp" alt="Wiracocha Labs" class="w-96 max-w-full mx-auto" />
         </div>
       </div>
     </section>

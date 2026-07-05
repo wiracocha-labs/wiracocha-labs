@@ -9,9 +9,10 @@ export interface Props {
   badgeVariant: 'action' | 'accent' | 'primary' | 'secondary'
   href: string
   linkLabel: string
+  image?: string
 }
 
-const { name, description, status, badgeVariant, href, linkLabel } = Astro.props
+const { name, description, status, badgeVariant, href, linkLabel, image } = Astro.props
 
 const badgeClasses: Record<string, string> = {
   action: 'badge-action',
@@ -22,7 +23,7 @@ const badgeClasses: Record<string, string> = {
 ---
 
 <article class="card h-full flex flex-col">
-  <ImageSquare class="w-full aspect-square mb-4" />
+  <ImageSquare src={image} alt={name} class="w-[307.14px] max-w-full aspect-square mb-4 mx-auto" />
   <div class="flex items-start justify-between gap-4 mb-4">
     <h3 class="card-title">{name}</h3>
     <span class={`badge ${badgeClasses[badgeVariant]}`}>{status}</span>
