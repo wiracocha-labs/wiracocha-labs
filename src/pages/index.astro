@@ -182,31 +182,31 @@ const year = new Date().getFullYear()
   <main>
     <section class="relative min-h-screen flex items-center">
       <div class="chasqui-container w-full relative">
-        <div class="flex flex-col md:flex-row items-center md:items-stretch">
-          <div class="w-full md:w-1/2 z-20 py-12 md:py-20 flex flex-col justify-center">
-            <div class="bg-primary/60 backdrop-blur-[6px] rounded-2xl md:rounded-l-2xl md:rounded-r-none p-8 md:p-10">
-              <h1 class="text-5xl md:text-7xl font-display font-bold text-brand mb-6">
+        <div class="flex flex-col lg:flex-row items-center lg:items-stretch lg:bg-[url('/chakanabg2.webp')] lg:bg-cover lg:bg-center lg:min-h-[85vh]">
+          <div class="w-full lg:w-1/2 z-20 py-12 lg:py-20 flex flex-col justify-center">
+            <div class="bg-primary/60 backdrop-blur-[6px] rounded-2xl lg:rounded-l-2xl lg:rounded-r-none p-8 lg:p-10 lg:bg-transparent lg:backdrop-blur-none lg:rounded-none">
+              <h1 class="text-5xl lg:text-7xl font-display font-bold text-brand mb-6">
                 {content.hero.title}
               </h1>
-              <div class="space-y-4 text-xl md:text-2xl text-text-primary/90 mb-6">
+              <div class="space-y-4 text-xl lg:text-2xl text-text-primary/90 mb-6">
                 {paragraphs(content.hero.body).map((p) => <p>{p}</p>)}
               </div>
               <div class="flex flex-col sm:flex-row gap-4">
-                <LinkButton href="#projects" variant="primary" class="text-lg md:text-xl md:px-8 md:py-4">
+                <LinkButton href="#projects" variant="primary" class="text-lg lg:text-xl lg:px-8 lg:py-4">
                   {content.hero.cta_primary}
                 </LinkButton>
-                <LinkButton href="#help" variant="secondary" class="text-lg md:text-xl md:px-8 md:py-4">
+                <LinkButton href="#help" variant="secondary" class="text-lg lg:text-xl lg:px-8 lg:py-4">
                   {content.hero.cta_secondary}
                 </LinkButton>
               </div>
             </div>
           </div>
-          <div class="w-full md:absolute md:inset-y-0 md:left-[25%] md:w-[75%] flex items-center justify-center min-h-[40vh] md:min-h-0">
-            <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-full md:h-full">
+          <div class="w-full lg:absolute lg:inset-y-0 lg:left-[25%] lg:w-[75%] flex items-center justify-center min-h-[40vh] lg:min-h-0">
+            <div class="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-full lg:h-full">
               <img
                 src="/chakanabg.webp"
                 alt=""
-                class="absolute inset-0 w-full h-full object-contain"
+                class="absolute inset-0 w-full h-full object-contain lg:hidden"
                 aria-hidden="true"
                 loading="lazy"
                 decoding="async"
