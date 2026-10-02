@@ -1,89 +1,57 @@
-# 🌌 Wiracocha Labs  
+# 🌌 Wiracocha Labs — website
 
-**Wiracocha Labs** es una organización enfocada en la investigación y desarrollo de productos descentralizados y open source.  
-Nuestro propósito es explorar, crear y compartir tecnologías que devuelvan el control a las comunidades y promuevan un ecosistema digital más libre, humano y sostenible.  
+Source of [wiracochalabs.com](https://wiracochalabs.com) — the public site of
+Wiracocha Labs, an open-source research and incubation organization focused on
+decentralized infrastructure, built from Latin America.
 
----
+- **Organization profile:** [github.com/wiracocha-labs](https://github.com/wiracocha-labs)
+- **Contact:** wiracochalabs@protonmail.com
 
-## ✨ Nuestra visión  
+## Projects
 
-En un mundo donde gran parte de la innovación ocurre en el norte global, **Wiracocha Labs nace desde Latinoamérica** para investigar y construir tecnologías descentralizadas que sean accesibles, transparentes y sostenibles.  
+| Project | Description | Status |
+|---|---|---|
+| [chasqui-app](https://github.com/wiracocha-labs/chasqui-app) | Decentralized communication platform for remote teams | In development |
+| [quipu-ipfs](https://github.com/wiracocha-labs/quipu-ipfs) | Decentralized P2P network in Rust | In development |
+| [chaka](https://github.com/wiracocha-labs/chaka) | Research: delta compression between model versions | Researching |
+| [yachay](https://github.com/wiracocha-labs/yachay) | Local AI model recommender for your hardware | Released (v0.1.0) |
+| [research](https://github.com/wiracocha-labs/research) | Whitepapers and experiment logs | Active |
 
-No solo exploramos blockchain o IPFS: también investigamos cómo monetizar proyectos open source, cómo construir comunidades sanas y cómo integrar el desarrollo humano con la tecnología.  
+Vision, principles, and roadmap live in the
+[org profile README](https://github.com/wiracocha-labs/.github).
 
----
+## Stack
 
-## 🛠️ Principios  
+- [Astro](https://astro.build) — static site, no server runtime
+- Tailwind CSS v4
+- Node >= 22.12, pnpm
 
-- **Open Source** – todo lo que creamos es abierto y compartido.  
-- **Usuarios primero** – desarrollamos para personas, no para métricas.  
-- **Comunicación efectiva y horizontal** – sin jerarquías innecesarias.  
-- **Inteligencia emocional** – la tecnología no está separada del ser humano.  
-- **Descentralización** – buscamos alternativas a la centralización del poder.  
-- **Privacidad donde se necesita, transparencia donde importa**.  
+## Development
 
----
+```bash
+pnpm install
 
-## 🚀 Estado actual  
+# Dev server — run it in background mode (see AGENTS.md)
+pnpm astro dev --background
+pnpm astro dev status   # / stop / logs
 
-La organización está en su **MVP organizacional**:  
-- Recibimos donaciones para sostener la investigación.  
-- Nuestro primer producto en desarrollo es **Chasqui Messenger**, una herramienta de comunicación descentralizada para equipos remotos.  
+# Production build → dist/
+pnpm build
+pnpm preview
+```
 
----
+Content and copy live in `src/pages/index.astro` (single-page site).
 
-## 🛤️ Roadmap  
+## Deployment
 
-### **Fase 0 – Fundación (Hoy)**  
-- Definición de principios y misión.  
-- Creación de la base organizacional y comunicación (este README, Notion, email de contacto).  
-- Investigación inicial en Rust, IPFS y Avalanche.  
+Fully static build (`dist/`). Deployment is configured in the hosting
+provider connected to this repository — there is no CI workflow in this repo.
 
-### **Fase 1 – Comunidad (0-6 meses)**  
-- Abrir canales de comunicación pública (Discord/Matrix, blog, redes).  
-- Publicar artículos de investigación sobre descentralización y open source.  
-- Prototipo funcional de **Chasqui Messenger** (MVP).  
-- Primeras contribuciones externas y colaboradores.  
+## License
 
-### **Fase 2 – Ecosistema (6-18 meses)**  
-- Mejorar Chasqui con feedback real de usuarios.  
-- Documentación clara y accesible para desarrolladores.  
-- Creación de un programa de contribución y badges para colaboradores.  
-- Alianzas con comunidades open source y universidades.  
-
-### **Fase 3 – Expansión (18+ meses)**  
-- Incubar nuevos proyectos descentralizados (IA distribuida, herramientas de privacidad, etc.).  
-- Experimentar con modelos de monetización sostenibles para open source.  
-- Convertirnos en un referente en descentralización y desarrollo humano en Latinoamérica.  
+AGPL-3.0 — see [LICENSE](./LICENSE).
 
 ---
 
-## 📬 Contacto  
-
-📧 wiracochalabs@protonmail.com  
-
----
-
-## 🌱 Cómo contribuir  
-
-1. Haz un fork del proyecto.  
-2. Propón ideas o mejoras vía PR.  
-3. Participa en discusiones de la comunidad.  
-4. Difunde nuestra visión.  
-
----
-
-## 🌀 Primer producto: Chasqui Messenger  
-
-Chasqui es un mensajero descentralizado diseñado para equipos remotos.  
-Queremos ofrecer una alternativa más libre, privada y accesible frente a herramientas centralizadas como Slack o Discord.  
-
-Más información pronto.  
-
----
-
-## ⚡ Tecnologías actuales  
-
-- Lenguaje: **Rust** 🦀  
-- Infraestructura: **IPFS**, **Avalanche**  
-- Filosofía: explorar más allá de lo evidente.  
+*Named after Wiracocha — the Andean creator deity. Open research, built in
+public.*
