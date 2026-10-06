@@ -9,6 +9,30 @@ import HelpBlock from '../components/HelpBlock.astro'
 import ImageSquare from '../components/ImageSquare.astro'
 import RotatingSphere from '../components/RotatingSphere.astro'
 
+// TODO: la API de GitHub limita 60 req/h sin token (IP compartida del build en
+// Cloudflare puede alcanzarlo). El fallback es 0 — el build nunca falla. Si
+// llega a ser problema, usar un GITHUB_TOKEN en env vars de Cloudflare.
+const GITHUB_ORG = 'wiracocha-labs'
+const repoStats = async (repo: string) => {
+  const empty = { stars: 0, forks: 0, release: null as string | null }
+  try {
+    const [info, latest] = await Promise.all([
+      fetch(`https://api.github.com/repos/${GITHUB_ORG}/${repo}`),
+      fetch(`https://api.github.com/repos/${GITHUB_ORG}/${repo}/releases/latest`),
+    ])
+    if (!info.ok) return empty
+    const data = await info.json()
+    const release = latest.ok ? ((await latest.json()).tag_name ?? null) : null
+    return {
+      stars: data.stargazers_count ?? 0,
+      forks: data.forks_count ?? 0,
+      release,
+    }
+  } catch {
+    return empty
+  }
+}
+
 const content = {
   meta: {
     title: 'Wiracocha Labs — Open research, built in public',
@@ -41,6 +65,7 @@ const content = {
     items: [
       {
         name: 'Chaka',
+        repo: 'chaka',
         description:
           'Research on delta compression between model versions for efficient synchronization between nodes in a decentralized P2P network with modest heterogeneous hardware.',
         status: 'Researching',
@@ -50,6 +75,7 @@ const content = {
       },
       {
         name: 'quipu-ipfs',
+        repo: 'quipu-ipfs',
         description:
           'Decentralized P2P network in Rust. Generic layer of identity, storage and transport for decentralized apps. First use case: encrypted messaging.',
         status: 'In development',
@@ -59,6 +85,7 @@ const content = {
       },
       {
         name: 'Yachay',
+        repo: 'yachay',
         description:
           "Selects the right local AI model for your hardware and your real task. No downloading what you don't need, no paying for what you don't use.",
         status: 'Released (v0.1.0)',
@@ -73,6 +100,7 @@ const content = {
     title: 'Where we are going',
     note: 'No dates — verifiable milestones',
     badge_variants: {
+      done: 'accent',
       in_progress: 'action',
       planned: 'secondary',
       horizon: 'primary',
@@ -80,17 +108,17 @@ const content = {
     phases: [
       {
         title: 'Phase 0 — Foundations',
-        status: 'In progress',
-        status_key: 'in_progress',
+        status: 'Done',
+        status_key: 'done',
         description:
           'Base architectures for Chaka and quipu-ipfs. First public repos. Yachay MVP released (v0.1.0).',
       },
       {
         title: 'Phase 1 — First deliverables',
-        status: 'Planned',
-        status_key: 'planned',
+        status: 'In progress',
+        status_key: 'in_progress',
         description:
-          'Two quipu-ipfs nodes communicating on local network. First delta compression experiments.',
+          'Chasqui MVP functional. Two quipu-ipfs nodes communicating on local network via mDNS ✓. First delta compression experiments.',
       },
       {
         title: 'Phase 2 — Real network',
@@ -118,6 +146,8 @@ const content = {
   help: {
     id: 'help',
     title: 'How to be part of this',
+    intro:
+      "Today, Wiracocha Labs is one person. The whole lab is a Raspberry Pi 3 and an M1 Pro MacBook. To keep researching and building, we need a PC, a GPU, and around US$3,000. This is where we start — counting in public. Here's how you can join.",
     blocks: [
       {
         title: 'Contribute code',
@@ -135,14 +165,24 @@ const content = {
         cta_href: 'https://www.instagram.com/wiracocha_labs/',
         external: true,
       },
-      // Fund — pendiente de link real de financiamiento (lo habilitamos cuando exista)
-      // {
-      //   title: 'Fund',
-      //   description: '',
-      //   cta_label: 'Support the project',
-      //   cta_href: '[FUNDING_LINK]',
-      //   external: true,
-      // },
+      {
+        title: 'Fund',
+        description:
+          'Hardware and time: a PC and a GPU for real benchmarks, and around US$3,000 to keep the research running.',
+        cta_label: 'Support the project',
+        // TODO: link real de financiamiento pendiente — mientras tanto, no va a ningún lugar.
+        cta_href: '#',
+        external: false,
+      },
+      {
+        title: 'Hire me',
+        description:
+          'Hire me for Rust, backend, or decentralized systems work — revenue funds the research.',
+        cta_label: 'Work with me',
+        // TODO: link de contacto pendiente — mientras tanto, no va a ningún lugar.
+        cta_href: '#',
+        external: false,
+      },
     ],
   },
   team: {
@@ -169,6 +209,13 @@ const content = {
 const paragraphs = (text: string) => text.split('\n\n').filter(Boolean)
 const isValidHref = (href: string) =>
   /^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('/')
+
+const projectItems = await Promise.all(
+  content.projects.items.map(async (item) => ({
+    ...item,
+    stats: await repoStats(item.repo),
+  }))
+)
 
 const visibleHelpBlocks = content.help.blocks.filter((block) =>
   isValidHref(block.cta_href)
@@ -241,7 +288,7 @@ const year = new Date().getFullYear()
           {content.projects.title}
         </h2>
         <div class="card-grid">
-          {content.projects.items.map((project) => (
+          {projectItems.map((project) => (
             <ProjectCard
               name={project.name}
               description={project.description}
@@ -250,6 +297,9 @@ const year = new Date().getFullYear()
               href={project.href}
               linkLabel={content.projects.link_label}
               image={project.image}
+              stars={project.stats.stars}
+              forks={project.stats.forks}
+              release={project.stats.release}
             />
           ))}
         </div>
@@ -288,6 +338,9 @@ const year = new Date().getFullYear()
         <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">
           {content.help.title}
         </h2>
+        <p class="max-w-3xl text-base md:text-lg text-text-primary/90 mb-8">
+          {content.help.intro}
+        </p>
         <div class="card-grid">
           {visibleHelpBlocks.map((block) => (
             <HelpBlock

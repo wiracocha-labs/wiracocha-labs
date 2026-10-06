@@ -10,9 +10,23 @@ export interface Props {
   href: string
   linkLabel: string
   image?: string
+  stars?: number
+  forks?: number
+  release?: string | null
 }
 
-const { name, description, status, badgeVariant, href, linkLabel, image } = Astro.props
+const {
+  name,
+  description,
+  status,
+  badgeVariant,
+  href,
+  linkLabel,
+  image,
+  stars,
+  forks,
+  release,
+} = Astro.props
 
 const badgeClasses: Record<string, string> = {
   action: 'badge-action',
@@ -29,6 +43,17 @@ const badgeClasses: Record<string, string> = {
     <span class={`badge ${badgeClasses[badgeVariant]}`}>{status}</span>
   </div>
   <p class="card-desc mb-6 flex-1">{description}</p>
+  <div class="flex items-center gap-3 mb-4 text-sm text-text-primary/70">
+    <span>★ {stars ?? 0}</span>
+    <span aria-hidden="true">·</span>
+    <span>{forks ?? 0} forks</span>
+    {release && (
+      <>
+        <span aria-hidden="true">·</span>
+        <span>{release}</span>
+      </>
+    )}
+  </div>
   <LinkButton href={href} variant="primary" external class="w-full sm:w-auto">
     {linkLabel}
   </LinkButton>
