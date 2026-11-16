@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro'
 import Navbar from './Navbar.astro'
 import Footer from './Footer.astro'
+import { nav, footer } from '../data/site'
 
 export interface Props {
   title: string
@@ -11,29 +12,6 @@ export interface Props {
 }
 
 const { title, description, heading, updated } = Astro.props
-
-// Duplicado a propósito de `content.nav` / `content.footer` en index.astro: son seis
-// strings estáticos y esto evita mover el contenido de la home a un módulo compartido.
-const nav = {
-  brand: { label: 'Wiracocha Labs', href: '/' },
-  logo: { src: '/logo.png', alt: 'Wiracocha Labs logo' },
-  links: [
-    { label: 'Projects', href: '/#projects' },
-    { label: 'Roadmap', href: '/#roadmap' },
-    { label: 'How to help', href: '/#help' },
-  ],
-}
-
-const footer = {
-  tagline: 'Wiracocha Labs — Open research, built in public.',
-  license: 'AGPL-3.0 — Open source',
-  links: [
-    { label: 'GitHub', href: 'https://github.com/wiracocha-labs' },
-    { label: 'Instagram', href: 'https://www.instagram.com/wiracocha_labs/' },
-    { label: 'Privacy', href: '/privacy' },
-    { label: 'Terms', href: '/terms' },
-  ],
-}
 
 const year = new Date().getFullYear()
 ---

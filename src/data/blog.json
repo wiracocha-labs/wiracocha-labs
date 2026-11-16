@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "bienvenidos-a-wiracocha-labs",
+    "title": "Bienvenidos a Wiracocha Labs",
+    "subtitle": "Por qué existe este blog",
+    "excerpt": "La primera inteligencia artificial descentralizada, con código y pesos abiertos, construida entre todos los latinos.",
+    "date": "2026-10-01",
+    "image": "https://substackcdn.com/image/fetch/$s_!FE1R!,f_auto,q_auto:good,w_640/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Feb3b8b23-7577-4202-a126-e53aa6ae1e57_800x800.png"
+  },
+  {
+    "slug": "que-hace-pesado-a-un-modelo-de-ia",
+    "title": "¿Qué hace pesado a un modelo de IA? (No es el lenguaje de programación)",
+    "subtitle": "Parte de la bitácora de investigación de Wiracocha Labs.",
+    "excerpt": "Cuando empecé a pensar en comprimir modelos de IA para que corran en hardware modesto, tenía una intuición equivocada: pensé que el peso de un modelo tenía algo que ver con cómo estaba construido a nivel de software, si estaba en Python, si usaba tal o tal framework. No es así, y vale la pena explicar por qué, porque es la base de todo lo demás que voy a escribir en esta serie.",
+    "date": "2026-11-10",
+    "image": "https://substackcdn.com/image/fetch/$s_!FgvI!,f_auto,q_auto:good,w_640/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff21a7511-dc97-4045-ba44-8a63adfb3d57_3200x1800.png"
+  },
+  {
+    "slug": "los-tres-niveles-de-hacer-un-modelo",
+    "title": "Los tres niveles de \"hacer un modelo más pequeño\" (y por qué solo uno me interesa investigar)",
+    "subtitle": "Parte de la bitácora de investigación de Wiracocha Labs.",
+    "excerpt": "Cuando empecé a planear compresor, mi idea inicial era simple: cuantizar pesos, comprimirlos con un algoritmo propio, listo. Investigando un poco más, me di cuenta de que “hacer un modelo más pequeño” en realidad son tres cosas distintas, con implicaciones muy diferentes, y que dos de ellas ya están resueltas por otros, mejor de lo que yo podría hacerlo en una primera iteración.",
+    "date": "2026-11-12",
+    "image": "https://substackcdn.com/image/fetch/$s_!41y8!,f_auto,q_auto:good,w_640/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb2b4825a-ca1c-416e-99e1-a7749f64c12c_3200x1800.png"
+  },
+  {
+    "slug": "deepseek-no-es-mas-chico-que-opus",
+    "title": "DeepSeek no es \"más chico\" que Opus. Es más rápido para su tamaño",
+    "subtitle": "Parte de la bitácora de investigación de Wiracocha Labs.",
+    "excerpt": "Tenía una idea que sonaba razonable: si DeepSeek es tan potente como modelos como Opus, y la gente dice que es “más eficiente”, entonces debe ser más pequeño, no? Investigando un poco más a fondo, descubrí que la premisa estaba mal, y la corrección es importante para cualquiera pensando en hardware modesto.",
+    "date": "2026-11-12",
+    "image": "https://substackcdn.com/image/fetch/$s_!Lufb!,f_auto,q_auto:good,w_640/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb95c4c50-a728-4ec7-ab81-d62b63f50628_3200x1800.png"
+  }
+]

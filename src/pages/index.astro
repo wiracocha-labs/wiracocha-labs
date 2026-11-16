@@ -8,6 +8,8 @@ import RoadmapItem from '../components/RoadmapItem.astro'
 import HelpBlock from '../components/HelpBlock.astro'
 import ImageSquare from '../components/ImageSquare.astro'
 import RotatingSphere from '../components/RotatingSphere.astro'
+import { nav, footer } from '../data/site'
+import { posts, postUrl } from '../data/blog'
 
 // TODO: la API de GitHub limita 60 req/h sin token (IP compartida del build en
 // Cloudflare puede alcanzarlo). El fallback es 0 — el build nunca falla. Si
@@ -38,15 +40,6 @@ const content = {
     title: 'Wiracocha Labs — Open research, built in public',
     description:
       'We research and build decentralized AI, P2P networks, and tools that run on your hardware.',
-  },
-  nav: {
-    brand: { label: 'Wiracocha Labs', href: '#' },
-    logo: { src: '/logo.png', alt: 'Wiracocha Labs logo' },
-    links: [
-      { label: 'Projects', href: '#projects' },
-      { label: 'Roadmap', href: '#roadmap' },
-      { label: 'How to help', href: '#help' },
-    ],
   },
   hero: {
     title: 'Wiracocha Labs',
@@ -196,16 +189,6 @@ const content = {
       { label: 'LinkedIn', href: 'https://www.linkedin.com/in/tinconomad/' },
     ],
   },
-  footer: {
-    tagline: 'Wiracocha Labs — Open research, built in public.',
-    license: 'AGPL-3.0 — Open source',
-    links: [
-      { label: 'GitHub', href: 'https://github.com/wiracocha-labs' },
-      { label: 'Instagram', href: 'https://www.instagram.com/wiracocha_labs/' },
-      { label: 'Privacy', href: '/privacy' },
-      { label: 'Terms', href: '/terms' },
-    ],
-  },
 }
 
 const paragraphs = (text: string) => text.split('\n\n').filter(Boolean)
@@ -224,10 +207,21 @@ const visibleHelpBlocks = content.help.blocks.filter((block) =>
 )
 const showTeamCta = isValidHref(content.team.cta_href)
 const year = new Date().getFullYear()
+
+// Solo los 3 posts más nuevos, del más viejo al más nuevo.
+const latestPosts = posts.slice(-3)
+
+// Mediodía UTC: evita que la fecha se corra un día por zona horaria.
+const formatDate = (date: string) =>
+  new Date(`${date}T12:00:00Z`).toLocaleDateString('es-PE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 ---
 
 <Layout title={content.meta.title} description={content.meta.description}>
-  <Navbar brand={content.nav.brand} logo={content.nav.logo} links={content.nav.links} />
+  <Navbar brand={nav.brand} logo={nav.logo} links={nav.links} />
 
   <main>
     <section class="relative min-h-screen flex items-center">
@@ -335,6 +329,49 @@ const year = new Date().getFullYear()
       </div>
     </section>
 
+    <section id="blog" class="py-16 md:py-24">
+      <div class="chasqui-container">
+        <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">Blog</h2>
+        <div class="card-grid">
+          {
+            latestPosts.map((post) => (
+              <a
+                href={postUrl(post.slug)}
+                target="_blank"
+                rel="noopener"
+                class="group flex flex-col overflow-hidden rounded-2xl border border-brand/20 bg-white/5 hover:bg-white/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand"
+              >
+                <img
+                  src={post.image}
+                  alt=""
+                  width="640"
+                  height="360"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full aspect-[16/9] object-cover"
+                />
+                <div class="flex flex-col flex-1 p-4">
+                  <h3 class="sr-only">{post.title}</h3>
+                  <p class="text-sm italic text-text-primary/60 mb-2">{post.subtitle}</p>
+                  <p class="text-sm text-text-primary/80 line-clamp-5 mb-4">{post.excerpt}</p>
+                  <div class="flex items-center justify-between mt-auto">
+                    <time datetime={post.date} class="text-xs text-text-primary/50">
+                      {formatDate(post.date)}
+                    </time>
+                    <span
+                      class="font-display text-sm font-semibold text-brand group-hover:underline"
+                    >
+                      Leer →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
     <section id={content.help.id} class="py-16 md:py-24">
       <div class="chasqui-container">
         <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">
@@ -398,9 +435,9 @@ const year = new Date().getFullYear()
   </main>
 
   <Footer
-    tagline={content.footer.tagline}
-    license={content.footer.license}
+    tagline={footer.tagline}
+    license={footer.license}
     year={year}
-    links={content.footer.links}
+    links={footer.links}
   />
 </Layout>
