@@ -10,6 +10,7 @@ import ImageSquare from '../components/ImageSquare.astro'
 import RotatingSphere from '../components/RotatingSphere.astro'
 import { nav, footer } from '../data/site'
 import { posts, postUrl } from '../data/blog'
+import { funding, nf } from '../data/funding'
 
 // TODO: la API de GitHub limita 60 req/h sin token (IP compartida del build en
 // Cloudflare puede alcanzarlo). El fallback es 0 — el build nunca falla. Si
@@ -140,41 +141,49 @@ const content = {
     id: 'help',
     title: 'How to be part of this',
     intro:
-      "Today, Wiracocha Labs is one person. The whole lab is a Raspberry Pi 3 and an M1 Pro MacBook. To keep researching and building, we need a PC, a GPU, and around US$3,000. This is where we start — counting in public. Here's how you can join.",
-    blocks: [
+      'Today, Wiracocha Labs is one person. The whole lab is a Raspberry Pi 3 and a MacBook M1 Pro. Everything that exists was built without funding. What is missing does not fit into two hours a day.',
+    primary: [
       {
         title: 'Contribute code',
         description:
-          'If you work with Rust, P2P, compression, or local AI — the repos are open. Every contribution counts.',
+          'If you work with Rust, P2P, compression or local AI, the repos are open. Every contribution counts.',
         cta_label: 'See repositories',
         cta_href: 'https://github.com/wiracocha-labs',
         external: true,
       },
       {
+        title: 'Donate hardware',
+        description:
+          'If you have a GPU with 24 GB of VRAM gathering dust (any generation, used is fine) and want it running experiments for this project, write to me. I do not need to buy one: I need compute hours.',
+        cta_label: 'Offer a GPU',
+        cta_href: 'mailto:wiracochalabs@protonmail.com?subject=GPU%20for%20experiments',
+        external: false,
+      },
+      {
+        title: 'Lend compute',
+        description:
+          'If your machine can run an experiment for a few hours, I send you the script and the result goes into the benchmark with your name in the credits.',
+        cta_label: 'Lend my machine',
+        cta_href: 'mailto:wiracochalabs@protonmail.com?subject=Compute%20for%20experiments',
+        external: false,
+      },
+    ],
+    secondary: [
+      {
         title: 'Share',
         description:
-          'The simplest way to help: share the project with someone who believes this matters.',
+          'The cheapest way to help: send this to someone who believes it matters.',
         cta_label: 'Follow on Instagram',
         cta_href: 'https://www.instagram.com/wiracocha_labs/',
         external: true,
       },
       {
-        title: 'Fund',
-        description:
-          'Hardware and time: a PC and a GPU for real benchmarks, and around US$3,000 to keep the research running.',
-        cta_label: 'Support the project',
-        // TODO: link real de financiamiento pendiente — mientras tanto, no va a ningún lugar.
-        cta_href: '#',
-        external: false,
-      },
-      {
         title: 'Hire me',
         description:
-          'Hire me for Rust, backend, or decentralized systems work — revenue funds the research.',
-        cta_label: 'Work with me',
-        // TODO: link de contacto pendiente — mientras tanto, no va a ningún lugar.
-        cta_href: '#',
-        external: false,
+          'I work on Rust, backend and decentralized systems. What I invoice funds the research.',
+        cta_label: 'See portfolio',
+        cta_href: 'https://renzotincopa.xyz/',
+        external: true,
       },
     ],
   },
@@ -193,7 +202,7 @@ const content = {
 
 const paragraphs = (text: string) => text.split('\n\n').filter(Boolean)
 const isValidHref = (href: string) =>
-  /^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('/')
+  /^https?:\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('/')
 
 const projectItems = await Promise.all(
   content.projects.items.map(async (item) => ({
@@ -202,9 +211,8 @@ const projectItems = await Promise.all(
   }))
 )
 
-const visibleHelpBlocks = content.help.blocks.filter((block) =>
-  isValidHref(block.cta_href)
-)
+const helpPrimary = content.help.primary.filter((block) => isValidHref(block.cta_href))
+const helpSecondary = content.help.secondary.filter((block) => isValidHref(block.cta_href))
 const showTeamCta = isValidHref(content.team.cta_href)
 const year = new Date().getFullYear()
 
@@ -374,23 +382,155 @@ const formatDate = (date: string) =>
 
     <section id={content.help.id} class="py-16 md:py-24">
       <div class="chasqui-container">
-        <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-10">
+        <h2 class="text-3xl md:text-4xl font-display font-semibold text-brand mb-4">
           {content.help.title}
         </h2>
-        <p class="max-w-3xl text-base md:text-lg text-text-primary/90 mb-8">
+        <p class="max-w-3xl text-base md:text-lg text-text-primary/90 mb-10">
           {content.help.intro}
         </p>
-        <div class="card-grid">
-          {visibleHelpBlocks.map((block) => (
-            <HelpBlock
-              title={block.title}
-              description={block.description}
-              ctaLabel={block.cta_label}
-              ctaHref={block.cta_href}
-              external={block.external}
-            />
-          ))}
+
+        <div class="rounded-2xl border border-brand/25 bg-white/5 p-6 md:p-10 mb-10">
+          <p class="text-sm md:text-base text-text-primary/70 mb-8">
+            Already shipped, with nobody paying for it: {posts.length} published articles, a CLI with
+            binaries for 5 platforms, and a whitepaper with 8 references.
+          </p>
+
+          <h3 class="text-2xl md:text-3xl font-display font-semibold text-brand mb-2">
+            One month of work costs US${nf(funding.goalUsd)}
+          </h3>
+          <p class="text-sm text-text-primary/60 mb-6">
+            US${funding.dayUsd} per working day, {funding.days} days a month.
+          </p>
+
+          <div class="flex flex-wrap gap-2 mb-3" aria-hidden="true">
+            {
+              Array.from({ length: funding.days }).map((_, index) => (
+                <span
+                  class={`block w-7 h-7 rounded ${
+                    index < funding.fundedDays
+                      ? 'bg-brand'
+                      : 'bg-brand/10 border border-brand/25'
+                  }`}
+                />
+              ))
+            }
+          </div>
+          <p class="text-sm text-text-primary/70 mb-10">
+            {funding.fundedDays} of {funding.days} days funded this month.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-10">
+            <div>
+              <h4 class="font-display font-semibold text-text-primary/90 mb-4">
+                What your contribution buys
+              </h4>
+              <ul class="divide-y divide-brand/15">
+                {
+                  funding.tiers.map((tier) => (
+                    <li class="flex items-center justify-between gap-4 py-3">
+                      <span class="font-display font-semibold text-brand tabular-nums">
+                        US${nf(tier.usd)}
+                      </span>
+                      <span class="text-sm text-text-primary/80 text-right">{tier.label}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-display font-semibold text-text-primary/90 mb-4">
+                What ships in those months
+              </h4>
+              <ol class="space-y-4">
+                {
+                  funding.milestones.map((milestone) => (
+                    <li class="flex gap-4">
+                      <span class="font-display text-sm font-semibold text-brand shrink-0 w-14">
+                        {milestone.month}
+                      </span>
+                      <span class="text-sm text-text-primary/80">{milestone.detail}</span>
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>
+          </div>
+
+          <div class="mt-10 pt-8 border-t border-brand/15">
+            {
+              funding.wallet ? (
+                <div>
+                  <p class="text-sm text-text-primary/60 mb-2">Donations in {funding.network}</p>
+                  <code class="block break-all rounded-lg bg-black/30 px-4 py-3 text-sm text-brand">
+                    {funding.wallet}
+                  </code>
+                  <p class="text-xs text-text-primary/50 mt-2">
+                    USDC on Polygon only. Sent on any other network, the funds are lost.
+                  </p>
+                  <p class="text-xs text-text-primary/50 mt-1">
+                    Sending USDT, or from another network? Write to
+                    <a href={`mailto:${funding.email}?subject=Donation`} class="text-brand hover:underline">
+                      {funding.email}
+                    </a>
+                    in Spanish or English and we work it out.
+                  </p>
+                </div>
+              ) : (
+                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                  <LinkButton
+                    href={`mailto:${funding.email}?subject=Contribution%20to%20the%20research`}
+                    variant="primary"
+                  >
+                    Arrange a contribution
+                  </LinkButton>
+                  <LinkButton href={funding.whitepaper} variant="secondary" external>
+                    Read the whitepaper
+                  </LinkButton>
+                </div>
+              )
+            }
+            <p class="text-sm text-text-primary/50 mt-4">
+              Contributions cover time, not equipment. The project does not depend on this. The speed
+              does.
+            </p>
+          </div>
         </div>
+
+        <div class="card-grid">
+          {
+            helpPrimary.map((block) => (
+              <HelpBlock
+                title={block.title}
+                description={block.description}
+                ctaLabel={block.cta_label}
+                ctaHref={block.cta_href}
+                external={block.external}
+              />
+            ))
+          }
+        </div>
+
+        <div class="card-grid">
+          {
+            helpSecondary.map((block) => (
+              <HelpBlock
+                title={block.title}
+                description={block.description}
+                ctaLabel={block.cta_label}
+                ctaHref={block.cta_href}
+                external={block.external}
+              />
+            ))
+          }
+        </div>
+
+        <p class="mt-10 text-sm text-text-primary/50">
+          <strong class="text-text-primary/70">Companies:</strong> sponsor a month of research
+          (US$2,000). Whitepaper and technical contact:
+          <a href={`mailto:${funding.email}`} class="text-brand hover:underline">
+            {funding.email}
+          </a>
+        </p>
       </div>
     </section>
 
