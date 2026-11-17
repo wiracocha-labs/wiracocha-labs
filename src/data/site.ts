@@ -8,6 +8,7 @@ export const nav = {
   links: [
     { label: 'Projects', href: '/#projects' },
     { label: 'Roadmap', href: '/#roadmap' },
+    { label: 'Research', href: '/#research' },
     { label: 'How to help', href: '/#help' },
     { label: 'Blog', href: '/#blog' },
   ],
