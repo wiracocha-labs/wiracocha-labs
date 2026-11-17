@@ -16,8 +16,7 @@ export const funding = {
   wallet: '0xBF7FCBA2CAAE7cd0435FCfC1a38aA3ebFF0F77a0',
   network: 'USDC on Polygon',
   email: 'wiracochalabs@protonmail.com',
-  whitepaper:
-    'https://github.com/wiracocha-labs/research/tree/main/whitepapers/0001-compresion-pesos-ia-introduccion',
+  whitepaper: '/research/0001',
   tiers: [
     { usd: 25, label: '2 hours of work' },
     { usd: 100, label: '1 full day' },

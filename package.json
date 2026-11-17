@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "post": "node scripts/add-post.mjs",
-    "generate-types": "wrangler types"
+    "generate-types": "wrangler types",
+    "paper": "node scripts/add-paper.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
